@@ -36,21 +36,72 @@
   <!-- ============ PRELOADER ============ -->
   <div class="loader" aria-hidden="true">
     <div class="loader__grid"></div>
-    <div class="loader__stream"><i></i></div>
-    <div class="loader__ripples"><i></i><i></i><i></i></div>
-    <svg class="loader__ring" viewBox="0 0 200 200">
-      <circle cx="100" cy="100" r="92" class="loader__ring-bg" />
-      <circle cx="100" cy="100" r="92" class="loader__ring-fg" pathLength="1" />
-    </svg>
-    <div class="loader__cup">
-      <svg viewBox="0 0 120 120"><defs><clipPath id="cupclip"><path d="M22 38h66v22a33 33 0 0 1-33 33 33 33 0 0 1-33-33z"/></clipPath></defs>
-        <g clip-path="url(#cupclip)"><rect class="loader__fill" x="0" y="0" width="120" height="120" /></g>
-        <path d="M22 38h66v22a33 33 0 0 1-33 33 33 33 0 0 1-33-33z" fill="none" stroke="currentColor" stroke-width="3" stroke-linejoin="round"/>
-        <path d="M88 46h6a10 10 0 0 1 0 20h-8" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
-        <path d="M14 102h82" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
+    <div class="machine">
+      <svg viewBox="0 0 300 330" class="machine__svg">
+        <defs>
+          <linearGradient id="mBody" x1="0" x2="1"><stop offset="0" stop-color="#6c7349"/><stop offset=".18" stop-color="#8c935f"/><stop offset=".55" stop-color="#80875c"/><stop offset="1" stop-color="#5a6040"/></linearGradient>
+          <linearGradient id="mMetal" x1="0" x2="1"><stop offset="0" stop-color="#8d8a7c"/><stop offset=".35" stop-color="#f1ecdf"/><stop offset=".6" stop-color="#bdb8a8"/><stop offset="1" stop-color="#77746a"/></linearGradient>
+          <linearGradient id="mCup" x1="0" x2="1"><stop offset="0" stop-color="#d9d0bd"/><stop offset=".35" stop-color="#fbf7ee"/><stop offset="1" stop-color="#cfc6b2"/></linearGradient>
+          <radialGradient id="mCrema" cx=".4" cy=".4" r=".7"><stop offset="0" stop-color="#e0a867"/><stop offset=".6" stop-color="#b27440"/><stop offset="1" stop-color="#5c3219"/></radialGradient>
+          <clipPath id="mCupTop"><ellipse cx="150" cy="232" rx="28" ry="5.5"/></clipPath>
+        </defs>
+
+        <!-- cup warmer -->
+        <rect x="52" y="14" width="196" height="8" rx="4" fill="url(#mMetal)"/>
+        <g stroke="#b9b4a4" stroke-width="2" stroke-linecap="round"><line x1="70" y1="10" x2="70" y2="16"/><line x1="230" y1="10" x2="230" y2="16"/></g>
+        <!-- body -->
+        <rect x="40" y="22" width="220" height="276" rx="20" fill="url(#mBody)"/>
+        <rect x="40" y="22" width="220" height="276" rx="20" fill="none" stroke="#12120e" stroke-opacity=".35" stroke-width="2"/>
+        <rect x="54" y="36" width="192" height="84" rx="12" fill="#5c6240"/>
+        <!-- pressure gauge -->
+        <circle cx="98" cy="78" r="30" fill="url(#mMetal)"/>
+        <circle cx="98" cy="78" r="25" fill="#f3ecdd"/>
+        <g class="machine__ticks" stroke="#1a1a16" stroke-width="1.6" stroke-linecap="round"></g>
+        <path d="M 116.7 74.7 A 19 19 0 0 1 114.5 87.5" fill="none" stroke="#b64a6d" stroke-width="3"/>
+        <text x="98" y="97" text-anchor="middle" class="machine__bar">BAR</text>
+        <line x1="98" y1="78" x2="98" y2="58" class="machine__needle" stroke="#b64a6d" stroke-width="2.4" stroke-linecap="round"/>
+        <circle cx="98" cy="78" r="3.5" fill="#1a1a16"/>
+        <!-- display -->
+        <rect x="142" y="56" width="90" height="36" rx="7" fill="#12120e"/>
+        <rect x="142" y="56" width="90" height="36" rx="7" fill="none" stroke="url(#mMetal)" stroke-width="2"/>
+        <text x="187" y="82" text-anchor="middle" class="machine__lcd">000</text>
+        <text x="187" y="106" text-anchor="middle" class="machine__label">EXTRACTION</text>
+        <circle cx="226" cy="44" r="4" class="machine__led" fill="#3a3a30"/>
+        <!-- brew bay -->
+        <rect x="68" y="128" width="164" height="150" rx="14" fill="#12120e"/>
+        <image href="assets/img/nash-cream.png" x="118" y="136" width="64" height="12.2" opacity=".9"/>
+        <!-- group head -->
+        <rect x="116" y="156" width="68" height="12" rx="3" fill="url(#mMetal)"/>
+        <!-- portafilter -->
+        <g class="machine__pf">
+          <rect x="114" y="168" width="72" height="13" rx="6" fill="url(#mMetal)"/>
+          <path d="M186 172 L252 166 a4.5 4.5 0 0 1 1 9 L186 179 Z" fill="#1a1a16" stroke="#3a3a30" stroke-width="1"/>
+          <rect x="137" y="181" width="6" height="8" rx="1.5" fill="url(#mMetal)"/>
+          <rect x="157" y="181" width="6" height="8" rx="1.5" fill="url(#mMetal)"/>
+        </g>
+        <!-- espresso streams -->
+        <line x1="140" y1="189" x2="140" y2="233" class="machine__stream"/>
+        <line x1="160" y1="189" x2="160" y2="233" class="machine__stream"/>
+        <!-- steam -->
+        <g class="machine__steam" fill="none" stroke="#f3ecdd" stroke-width="2" stroke-linecap="round">
+          <path d="M142 222 q-6 -10 0 -18 q6 -8 0 -18"/>
+          <path d="M158 224 q6 -10 0 -18 q-6 -8 0 -18"/>
+        </g>
+        <!-- cup -->
+        <ellipse cx="150" cy="268" rx="44" ry="6" fill="url(#mCup)"/>
+        <path d="M177 239 q17 -2 17 11 q0 12 -20 11" fill="none" stroke="url(#mCup)" stroke-width="5" stroke-linecap="round"/>
+        <path d="M122 232 L125 254 Q128 266 150 266 Q172 266 175 254 L178 232 Z" fill="url(#mCup)"/>
+        <ellipse cx="150" cy="232" rx="28" ry="5.5" fill="#e8dfcc"/>
+        <g clip-path="url(#mCupTop)"><ellipse cx="150" cy="234" rx="0" ry="0" class="machine__liquid" fill="url(#mCrema)"/></g>
+        <image href="assets/img/nash-ink.png" x="132" y="244" width="36" height="6.9"/>
+        <line x1="130" y1="239" x2="170" y2="239" stroke="#80875c" stroke-width="1.6"/>
+        <!-- drip tray -->
+        <rect x="80" y="270" width="140" height="8" rx="3" fill="url(#mMetal)"/>
+        <!-- feet -->
+        <rect x="62" y="296" width="30" height="10" rx="3" fill="#12120e" stroke="#3a3a30"/>
+        <rect x="208" y="296" width="30" height="10" rx="3" fill="#12120e" stroke="#3a3a30"/>
       </svg>
     </div>
-    <div class="loader__count"><span class="loader__num">000</span></div>
     <p class="loader__note mono" data-i18n="loader">Pulling the first shot…</p>
 
     <div class="loader__stage">

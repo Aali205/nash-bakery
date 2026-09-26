@@ -196,35 +196,59 @@ function waitForAssets(onProgress) {
   ]);
 }
 
-// Act I — an espresso stream pours into a cup while assets load.
-// Act II — the cup is full: ring bursts, N·A·S·H crash in, text decodes, beans explode.
+// Act I — an espresso machine powers up, the portafilter locks in and a shot
+//         pours into a NASH cup while assets load (display + gauge = progress).
+// Act II — shot done: steam rises, the machine drops away, N·A·S·H crash in,
+//          text decodes, beans explode.
 // Act III — an iris opens from the centre and the 3D cup drops into the hero.
 const loader = $('.loader');
 const loaderState = { p: 0, real: 0 };
-const num = $('.loader__num'), ringFg = $('.loader__ring-fg'), fill = $('.loader__fill');
+const lcd = $('.machine__lcd'), needle = $('.machine__needle'), liquid = $('.machine__liquid');
 const drawLoader = () => {
   const p = loaderState.p;
-  num.textContent = String(Math.round(p * 100)).padStart(3, '0');
-  ringFg.style.strokeDashoffset = 1 - p;
-  fill.style.transform = `translateY(${(1 - p) * 100}%)`;
+  lcd.textContent = String(Math.round(p * 100)).padStart(3, '0');
+  gsap.set(needle, { rotation: -120 + p * 215 + (p > 0 && p < 1 ? Math.sin(performance.now() / 90) * 2 : 0), svgOrigin: '98 78' });
+  liquid.setAttribute('rx', (28 * Math.min(1, p * 1.15)).toFixed(2));
+  liquid.setAttribute('ry', (5.5 * Math.min(1, p * 1.15)).toFixed(2));
+  liquid.setAttribute('cy', (240 - p * 8).toFixed(2));
 };
 
-gsap.set('.slice', { yPercent: -160, opacity: 0 });
-gsap.set(['.loader__cup', '.loader__ring', '.loader__count', '.loader__note'], { opacity: 0 });
-gsap.set('.loader__ring', { scale: 0.6 });
+// Gauge ticks
+const tickGroup = $('.machine__ticks');
+for (let i = 0; i <= 10; i++) {
+  const a = (-120 + i * 24) * Math.PI / 180;
+  const l = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+  const r1 = i % 5 ? 19 : 17;
+  l.setAttribute('x1', 98 + Math.sin(a) * r1); l.setAttribute('y1', 78 - Math.cos(a) * r1);
+  l.setAttribute('x2', 98 + Math.sin(a) * 22); l.setAttribute('y2', 78 - Math.cos(a) * 22);
+  tickGroup.appendChild(l);
+}
 
+gsap.set('.slice', { yPercent: -160, opacity: 0 });
+gsap.set('.loader__note', { opacity: 0 });
+gsap.set('.machine', { y: 120, opacity: 0, scale: 0.85 });
+gsap.set('.machine__pf', { x: 70, y: 18, rotation: 28, opacity: 0, svgOrigin: '150 168' });
+gsap.set('.machine__stream', { scaleY: 0, transformOrigin: '50% 0%' });
+
+let pouring = false;
 const actOne = gsap.timeline()
   .to('.loader__grid', { opacity: 1, scale: 1, duration: 1.4, ease: 'expo.out', startAt: { opacity: 0, scale: 1.3 } })
-  .to('.loader__stream', { scaleY: 1, duration: 0.9, ease: 'expo.inOut' }, 0.1)
-  .to('.loader__ring', { opacity: 1, scale: 1, duration: 1.2, ease: 'expo.out' }, 0.5)
-  .to(['.loader__cup', '.loader__count', '.loader__note'], { opacity: 1, duration: 0.8, stagger: 0.1 }, 0.6);
-const ripples = gsap.fromTo('.loader__ripples i', { scale: 0, opacity: 0.9 }, {
-  scale: 26, opacity: 0, duration: 1.8, ease: 'power2.out', stagger: { each: 0.6, repeat: -1 },
-});
-// Display progress glides towards real progress, never faster than a fill-up feels
+  .to('.machine', { y: 0, opacity: 1, scale: 1, duration: 1.1, ease: 'back.out(1.6)' }, 0.1)
+  .add(() => $('.machine__led').classList.add('is-on'), 0.8)
+  // portafilter slides in, then twists to lock
+  .to('.machine__pf', { x: 0, y: 0, opacity: 1, duration: 0.55, ease: 'power3.out' }, 0.9)
+  .to('.machine__pf', { rotation: 0, duration: 0.35, ease: 'back.out(3)' }, 1.4)
+  .to('.machine', { keyframes: [{ x: -3 }, { x: 3 }, { x: -1 }, { x: 0 }], duration: 0.2 }, 1.7)
+  .to('.loader__note', { opacity: 0.6, duration: 0.6 }, 1.5)
+  // the pour begins
+  .to('.machine__stream', { scaleY: 1, duration: 0.6, ease: 'power2.in', stagger: 0.08 }, 1.9)
+  .add(() => { pouring = true; }, 2.1);
+
+// Display progress glides towards real progress while the shot pulls
 const progressTick = () => {
-  const goal = Math.min(0.92, 0.25 + loaderState.real * 0.67);
-  loaderState.p += (goal - loaderState.p) * 0.035;
+  if (!pouring) return drawLoader();
+  const goal = Math.min(0.92, 0.2 + loaderState.real * 0.72);
+  loaderState.p += (goal - loaderState.p) * 0.03;
   drawLoader();
 };
 gsap.ticker.add(progressTick);
@@ -264,24 +288,27 @@ $('[data-skip]').addEventListener('click', () => gsap.globalTimeline.timeScale(6
 
 Promise.all([
   waitForAssets((p) => { loaderState.real = Math.max(loaderState.real, p); }),
-  new Promise((r) => setTimeout(r, 2200)),
+  new Promise((r) => setTimeout(r, 3400)),
 ]).then(() => {
   gsap.ticker.remove(progressTick);
   actOne.progress(1);
+  pouring = true;
   const iris = { r: 0 };
   const R = Math.hypot(innerWidth, innerHeight) / 2 + 40;
   const tl = gsap.timeline({ onComplete: startSite });
 
-  // Fill to the brim
-  tl.to(loaderState, { p: 1, duration: 0.7, ease: 'power3.inOut', onUpdate: drawLoader })
-    .to('.loader__stream', { scaleY: 0, transformOrigin: '50% 100%', duration: 0.5, ease: 'expo.in' }, '-=0.2')
-    .add(() => ripples.kill())
-    .to('.loader__ripples i', { opacity: 0, duration: 0.3 }, '<')
-    // Cup pops, ring bursts outward
-    .to('.loader__cup', { scale: 1.18, duration: 0.25, ease: 'power2.out' })
-    .to('.loader__cup', { scale: 0, rotation: -25, duration: 0.5, ease: 'back.in(2.5)' })
-    .to('.loader__ring', { scale: 2.6, opacity: 0, duration: 1, ease: 'expo.out' }, '-=0.15')
-    .to(['.loader__count', '.loader__note'], { y: 40, opacity: 0, duration: 0.4, ease: 'power2.in' }, '<')
+  // Finish the shot
+  tl.to(loaderState, { p: 1, duration: 0.8, ease: 'power3.inOut', onUpdate: drawLoader })
+    .to('.machine__stream', { scaleY: 0, transformOrigin: '50% 100%', duration: 0.45, ease: 'expo.in', stagger: 0.06 }, '-=0.15')
+    .add(() => $('.machine__led').classList.remove('is-on'))
+    .to(needle, { rotation: -120, svgOrigin: '98 78', duration: 0.6, ease: 'bounce.out' }, '<')
+    // steam curls up from the cup
+    .to('.machine__steam path', { strokeDashoffset: 0, opacity: 0.8, duration: 0.8, ease: 'power2.out', stagger: 0.15 }, '<')
+    .to('.machine__steam path', { y: -14, opacity: 0, duration: 0.8, ease: 'power1.in', stagger: 0.15 }, '>-0.1')
+    // machine jumps, then drops away
+    .to('.machine', { y: -18, scale: 1.04, duration: 0.25, ease: 'power2.out' }, '-=0.7')
+    .to('.machine', { y: innerHeight, rotation: -8, scale: 0.8, duration: 0.7, ease: 'back.in(1.8)' }, '>')
+    .to('.loader__note', { y: 40, opacity: 0, duration: 0.4, ease: 'power2.in' }, '<')
     .to('.loader__grid', { scale: 0.85, opacity: 0.4, duration: 1.2, ease: 'expo.out' }, '<')
     // N · A · S · H crash in
     .addLabel('word', '-=0.75')
