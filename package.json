@@ -1,0 +1,11 @@
+{
+  "name": "NashBakery",
+  "version": "1.0.0",
+  "description": "NASH Artisanal Bakery — Damascus, est. 2018",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "dev": "node index.js"
+  },
+  "private": true
+}
