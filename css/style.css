@@ -450,3 +450,34 @@ main { overflow-x: clip; }
   .tabs::-webkit-scrollbar { display: none; }
   .tab { white-space: nowrap; flex: 0 0 auto; }
 }
+
+/* ---------- english cake / oven ---------- */
+.bake { position: relative; z-index: 3; background: radial-gradient(ellipse at 70% 60%, #3a2819 0%, #1d1510 55%, #120d0a 100%); color: var(--cream); overflow: hidden; }
+.bake__pin { height: 100svh; display: grid; grid-template-columns: minmax(280px, 5fr) 7fr; align-items: center; gap: 40px; padding: 90px var(--gutter) 30px; }
+.bake__title { color: var(--cream); margin-bottom: 36px; }
+.bake__steps { position: relative; min-height: 150px; max-width: 420px; }
+.bake__step { position: absolute; inset: 0 0 auto 0; display: grid; grid-template-columns: auto 1fr; column-gap: 16px; opacity: 0; }
+.bake__step .mono { grid-row: span 2; color: var(--crema); padding-top: 6px; }
+.bake__step b { font-family: var(--f-display); font-weight: 600; font-size: clamp(22px, 2.2vw, 32px); letter-spacing: -.02em; line-height: 1.15; }
+.bake__step p { opacity: .75; margin-top: 8px; font-size: 16px; }
+.bake__dots { display: flex; gap: 8px; margin-top: 18px; }
+.bake__dots i { width: 28px; height: 3px; border-radius: 3px; background: rgba(243,236,221,.18); transition: background .4s, width .4s; }
+.bake__dots i.is-on { background: var(--crema); width: 44px; }
+.bake__scene { width: 100%; max-height: calc(100svh - 120px); overflow: visible; }
+.oven-temp, .oven-time { font: 800 17px "Unbounded", sans-serif; fill: var(--crema); }
+.oven-time { font-size: 13px; fill: #f3ecdd; opacity: .8; }
+.oven-ding { font: 800 30px "Unbounded", sans-serif; fill: var(--crema); opacity: 0; letter-spacing: .08em; }
+.heat { stroke: #3a2a20; }
+.heatwaves path { animation: waves 1.6s ease-in-out infinite; }
+.heatwaves path:nth-child(2) { animation-delay: .5s; } .heatwaves path:nth-child(3) { animation-delay: 1s; }
+@keyframes waves { 0% { transform: translateY(8px); opacity: 0; } 50% { opacity: 1; } 100% { transform: translateY(-14px); opacity: 0; } }
+.cake-steam path { animation: steamup 2.4s ease-in-out infinite; }
+.cake-steam path:nth-child(2) { animation-delay: .8s; } .cake-steam path:nth-child(3) { animation-delay: 1.6s; }
+@keyframes steamup { 0% { transform: translateY(10px); opacity: 0; } 40% { opacity: .7; } 100% { transform: translateY(-30px); opacity: 0; } }
+@media (max-width: 860px) {
+  .bake__pin { grid-template-columns: 1fr; grid-template-rows: auto 1fr; align-content: start; gap: 8px; padding-top: 80px; }
+  .bake__title { margin-bottom: 14px; }
+  .bake__steps { min-height: 120px; }
+  .bake__step p { font-size: 14px; }
+  .bake__scene { max-height: 52svh; }
+}

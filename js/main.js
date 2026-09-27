@@ -139,7 +139,7 @@ ScrollTrigger.create({
   },
 });
 const cursor = $('.cursor');
-['.damascene', '.midnight'].forEach((sel) => ScrollTrigger.create({
+['.damascene', '.bake', '.midnight'].forEach((sel) => ScrollTrigger.create({
   trigger: sel, start: 'top 60px', end: 'bottom 60px',
   onToggle: (s) => { nav.classList.toggle('is-dark', s.isActive); cursor.classList.toggle('is-light', s.isActive); },
 }));
@@ -498,6 +498,8 @@ function setupScroll() {
     $$('.sig').forEach((el) => gsap.from(el, { opacity: 0, y: 60, duration: 1.2, ease: 'expo.out', scrollTrigger: { trigger: el, start: 'top 85%' } }));
   });
 
+  cakeScene();
+
   // Menu
   movePill($('.tab.is-active'), true);
   gsap.from('.tabs', { opacity: 0, y: 30, duration: 1, ease: 'expo.out', scrollTrigger: { trigger: '.tabs', start: 'top 90%' } });
@@ -591,4 +593,149 @@ function petals() {
     trigger: '.damascene', start: 'top bottom', end: 'bottom top',
     onToggle: (s) => { active = s.isActive && !reduced; if (active) { size(); draw(); } },
   });
+}
+
+/* ------------------------------------------------------------------ */
+/* English cake — scroll-scrubbed oven scene                           */
+/* preheat → rise & crack → DING → door opens → out onto the board →   */
+/* unmold → chocolate pour + drips → pistachio & rose on top           */
+/* ------------------------------------------------------------------ */
+function cakeScene() {
+  const root = $('.bake');
+  if (!root) return;
+  const q = (s) => root.querySelector(s);
+  const qa = (s) => [...root.querySelectorAll(s)];
+  const NS = 'http://www.w3.org/2000/svg';
+  const el = (tag, attrs, parent) => {
+    const n = document.createElementNS(NS, tag);
+    Object.entries(attrs).forEach(([k, v]) => n.setAttribute(k, v));
+    parent.appendChild(n);
+    return n;
+  };
+
+  // Final cake placement on the board (root SVG units)
+  const OUT = { x: 300, y: 356, s: 1.7 };
+  const glazeTopY = OUT.y - 50 * OUT.s;
+
+  // Chocolate drips down the front of the loaf
+  const drips = [[-86, 30], [-58, 18], [-30, 44], [-2, 24], [26, 38], [54, 16], [82, 34]].map(([x, len]) => ({
+    rect: el('rect', { x: x - 4, y: -14, width: 8, height: 0, rx: 4, fill: '#3a1d10' }, q('.drips')),
+    drop: el('circle', { cx: x, cy: -14, r: 0, fill: '#3a1d10' }, q('.drips')),
+    len,
+  }));
+
+  // Pistachio & rose petal toppings resting on the glaze
+  const toppingInner = [];
+  for (let i = 0; i < 18; i++) {
+    const x = -84 + (168 / 17) * i + gsap.utils.random(-4, 4);
+    const y = -52 + 34 * (x / 98) ** 2 + gsap.utils.random(-3, 2);
+    const g = el('g', { transform: `translate(${x.toFixed(1)} ${y.toFixed(1)})` }, q('.toppings'));
+    const inner = el('g', {}, g);
+    if (i % 3 === 2) el('ellipse', { rx: 5.5, ry: 2.8, fill: i % 2 ? '#b64a6d' : '#d06a8c', transform: `rotate(${gsap.utils.random(-50, 50) | 0})` }, inner);
+    else el('polygon', { points: '-4,-2 3,-4 5,1 -1,4', fill: i % 2 ? '#9fb068' : '#7d9a45', transform: `rotate(${gsap.utils.random(0, 360) | 0})` }, inner);
+    toppingInner.push(inner);
+  }
+
+  const steps = qa('.bake__step'), dots = qa('.bake__dots i');
+  const temp = q('.oven-temp'), time = q('.oven-time');
+  const stream = q('.choc-stream'), clip = q('.glaze-clip');
+
+  gsap.set(steps, { opacity: 0, y: 20 });
+  gsap.set(steps[0], { opacity: 1, y: 0 });
+  gsap.set(dots[0], { backgroundColor: '#c68b4e', width: 44 });
+  gsap.set('.cake-pos', { x: 300, y: 300 });
+  gsap.set('.cake-scale', { scale: 0.85, svgOrigin: '0 0' });
+  gsap.set('.cake-rise', { scaleY: 0.6, svgOrigin: '0 58' });
+  gsap.set('.board', { opacity: 0, y: 30 });
+  gsap.set('.jug-pos', { x: 130, y: -150 });
+  gsap.set('.jug', { rotation: 0, svgOrigin: '0 0' });
+  gsap.set(toppingInner, { y: -260, opacity: 0 });
+
+  const tl = gsap.timeline({
+    defaults: { ease: 'none' },
+    scrollTrigger: { trigger: root, start: 'top top', end: '+=460%', pin: '.bake__pin', scrub: 1 },
+  });
+
+  const toStep = (i, t) => {
+    tl.to(steps[i - 1], { opacity: 0, y: -20, duration: 0.3 }, t)
+      .to(steps[i], { opacity: 1, y: 0, duration: 0.3 }, t + 0.15)
+      .to(dots[i - 1], { backgroundColor: 'rgba(243,236,221,.18)', width: 28, duration: 0.2 }, t)
+      .to(dots[i], { backgroundColor: '#c68b4e', width: 44, duration: 0.2 }, t);
+  };
+
+  // 1 — preheat
+  const tp = { v: 0 };
+  tl.to('.knob--l', { rotation: 140, svgOrigin: '160 84', duration: 1 }, 0)
+    .to('.knob--r', { rotation: 200, svgOrigin: '440 84', duration: 1 }, 0.1)
+    .to(tp, { v: 180, duration: 1.1, onUpdate: () => { temp.textContent = String(Math.round(tp.v)).padStart(3, '0') + '°'; } }, 0)
+    .to('.oven-led', { attr: { fill: '#3fbf6a' }, duration: 0.1 }, 0.2)
+    .to('.heat', { stroke: '#ff6a1f', duration: 1 }, 0.1)
+    .to('.oven-glow', { opacity: 0.6, duration: 1 }, 0.2);
+
+  // 2 — bake: rise, brown, crack, countdown
+  toStep(1, 1.2);
+  const clock = { s: 45 * 60 };
+  tl.to(clock, {
+    s: 0, duration: 3.8,
+    onUpdate: () => {
+      const s = Math.round(clock.s);
+      time.textContent = `${String(Math.floor(s / 60)).padStart(2, '0')}:${String(s % 60).padStart(2, '0')}`;
+    },
+  }, 1.2)
+    .to('.cake-rise', { scaleY: 1, svgOrigin: '0 58', duration: 3.2, ease: 'power1.inOut' }, 1.3)
+    .to('.cake-baked', { opacity: 1, duration: 2.6 }, 2)
+    .to('.cake-crack', { strokeDashoffset: 0, duration: 1.1, stagger: 0.2 }, 3.6)
+    .to('.heatwaves', { opacity: 1, duration: 0.4 }, 1.4)
+    .to('.oven-glow', { opacity: 0.95, duration: 1.8 }, 1.3)
+    .to('.oven-glow', { opacity: 0.7, duration: 1.8 }, 3.1)
+    .to('.heatwaves', { opacity: 0, duration: 0.4 }, 4.8);
+
+  // DING
+  tl.fromTo('.oven-ding', { opacity: 0, scale: 0.4, svgOrigin: '300 20' }, { opacity: 1, scale: 1.15, svgOrigin: '300 20', duration: 0.25, ease: 'back.out(3)' }, 5)
+    .to('.oven-ding', { opacity: 0, y: -10, duration: 0.3 }, 5.5)
+    .to('.oven-led', { attr: { fill: '#3a3a30' }, duration: 0.1 }, 5)
+    .to('.heat', { stroke: '#3a2a20', duration: 0.5 }, 5)
+    .to('.oven-glow', { opacity: 0.3, duration: 0.5 }, 5);
+
+  // 3 — door drops open, cake comes out onto the board, pan slides away
+  tl.to('.oven-door', { scaleY: 0.07, svgOrigin: '300 380', duration: 0.8, ease: 'power2.in' }, 5.4);
+  toStep(2, 6.1);
+  tl.to('.cake-pos', { x: OUT.x, y: OUT.y, duration: 1.2, ease: 'power2.inOut' }, 6.2)
+    .to('.cake-scale', { scale: OUT.s, svgOrigin: '0 0', duration: 1.2, ease: 'power2.inOut' }, 6.2)
+    .to(['.oven-back', '.oven-door'], { opacity: 0.18, y: -30, duration: 1.2 }, 6.2)
+    .to('.board', { opacity: 1, y: 0, duration: 0.8, ease: 'power2.out' }, 6.5)
+    .to('.cake-steam', { opacity: 1, duration: 0.4 }, 7.1)
+    .to('.cake-pan', { y: 110, opacity: 0, duration: 0.6, ease: 'power2.in' }, 7.5);
+
+  // 4 — chocolate: jug tilts in, stream falls, glaze sweeps across, drips run
+  toStep(3, 8);
+  const pour = { g: 0 };
+  const setPour = () => {
+    const lx = -100 + 200 * pour.g;
+    const x = OUT.x + lx * OUT.s;
+    clip.setAttribute('width', lx + 112 + 8);
+    stream.setAttribute('x1', x);
+    stream.setAttribute('x2', x);
+    gsap.set('.jug-pos', { x });
+  };
+  tl.add(setPour, 7.95)
+    .to('.jug-pos', { y: 92, duration: 0.5, ease: 'power2.out' }, 8)
+    .to('.jug', { rotation: -38, svgOrigin: '0 0', duration: 0.4 }, 8.2)
+    .to('.cake-steam', { opacity: 0, duration: 0.5 }, 8.4)
+    .fromTo(stream, { attr: { y1: 92, y2: 92 } }, { attr: { y1: 92, y2: glazeTopY + 4 }, duration: 0.35, ease: 'power2.in' }, 8.5)
+    .to(pour, { g: 1, duration: 1.7, ease: 'sine.inOut', onUpdate: setPour }, 8.8);
+  drips.forEach((d, i) => {
+    const t0 = 9 + i * 0.22;
+    tl.to(d.rect, { attr: { height: d.len }, duration: 0.8, ease: 'power1.in' }, t0)
+      .to(d.drop, { attr: { cy: -14 + d.len, r: 5.5 }, duration: 0.8, ease: 'power1.in' }, t0);
+  });
+  tl.to(stream, { attr: { y1: glazeTopY + 4 }, duration: 0.3, ease: 'power2.in' }, 10.5)
+    .to('.jug', { rotation: 0, svgOrigin: '0 0', duration: 0.3 }, 10.5)
+    .to('.jug-pos', { y: -160, duration: 0.5, ease: 'power2.in' }, 10.7);
+
+  // 5 — toppings rain down, glaze shines
+  toStep(4, 10.9);
+  tl.to(toppingInner, { y: 0, opacity: 1, duration: 0.7, ease: 'bounce.out', stagger: { each: 0.05, from: 'random' } }, 11)
+    .to('.glaze-shine', { strokeDashoffset: 0, duration: 0.6 }, 11.6)
+    .to({}, { duration: 0.6 });
 }
