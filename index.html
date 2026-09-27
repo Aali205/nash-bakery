@@ -14,7 +14,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..700;1,9..144,300..700&family=Unbounded:wght@400;600;800&family=Space+Mono:wght@400;700&family=Reem+Kufi:wght@500;700&family=IBM+Plex+Sans+Arabic:wght@300;400;600&family=Inter:wght@300;400;500&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="css/style.css?v=4" />
+  <link rel="stylesheet" href="css/style.css?v=8" />
 
   <script type="application/ld+json">
   {
@@ -128,27 +128,27 @@
   <header class="nav">
     <a href="#top" class="nav__logo" aria-label="NASH home"><img src="assets/img/nash-ink.png" alt="NASH" /></a>
     <nav class="nav__links" aria-label="Primary">
-      <a href="#story" data-i18n="nav.story">Story</a>
-      <a href="#espresso" data-i18n="nav.espresso">Espresso</a>
-      <a href="#damascene" data-i18n="nav.damascene">Damascene</a>
-      <a href="#menu" data-i18n="nav.menu">Menu</a>
-      <a href="#visit" data-i18n="nav.visit">Visit</a>
+      <a href="story.html" data-i18n="nav.story">Story</a>
+      <a href="espresso.html" data-i18n="nav.espresso">Espresso</a>
+      <a href="damascene.html" data-i18n="nav.damascene">Damascene</a>
+      <a href="menu.html" data-i18n="nav.menu">Menu</a>
+      <a href="visit.html" data-i18n="nav.visit">Visit</a>
     </nav>
     <div class="nav__right">
       <span class="status" data-status><i></i><b data-status-text>Open now</b></span>
       <button class="lang" type="button" data-lang-toggle aria-label="Switch language">عربي</button>
-      <a class="btn btn--ink magnetic" href="#order" data-i18n="nav.order">Order</a>
-      <button class="burger" type="button" aria-label="Menu" data-burger><span></span><span></span></button>
+      <a class="btn btn--ink magnetic" href="order.html" data-i18n="nav.order">Order</a>
+      <button class="burger" type="button" aria-label="Menu" aria-expanded="false" data-burger><span></span><span></span></button>
     </div>
   </header>
 
   <div class="mobile-menu" data-mobile-menu>
-    <a href="#story" data-i18n="nav.story">Story</a>
-    <a href="#espresso" data-i18n="nav.espresso">Espresso</a>
-    <a href="#damascene" data-i18n="nav.damascene">Damascene</a>
-    <a href="#menu" data-i18n="nav.menu">Menu</a>
-    <a href="#visit" data-i18n="nav.visit">Visit</a>
-    <a href="#order" data-i18n="nav.order">Order</a>
+    <a href="story.html" data-i18n="nav.story">Story</a>
+    <a href="espresso.html" data-i18n="nav.espresso">Espresso</a>
+    <a href="damascene.html" data-i18n="nav.damascene">Damascene</a>
+    <a href="menu.html" data-i18n="nav.menu">Menu</a>
+    <a href="visit.html" data-i18n="nav.visit">Visit</a>
+    <a href="order.html" data-i18n="nav.order">Order</a>
   </div>
 
   <!-- 3D espresso scene lives behind the hero + espresso chapters -->
@@ -165,16 +165,15 @@
       </div>
 
       <div class="hero__mark">
-        <img src="assets/img/nash-ink.png" alt="NASH" class="hero__word" />
-      </div>
+        <img src="assets/img/nash-ink.png" alt="NASH" class="hero__word" />      </div>
 
       <div class="hero__bottom">
         <h1 class="hero__title split" data-i18n="hero.title">Baked with heart.<br /><em>Pulled with obsession.</em></h1>
         <div class="hero__cta">
           <p class="hero__lead" data-i18n="hero.lead">An artisanal bakery &amp; coffee house in Damascus — original ingredients, no shortcuts, and an espresso people cross the city for.</p>
           <div class="hero__btns">
-            <a href="#menu" class="btn btn--ink magnetic" data-i18n="hero.cta1">Explore the menu</a>
-            <a href="#espresso" class="btn btn--line magnetic" data-i18n="hero.cta2">Meet the espresso</a>
+            <a href="menu.html" class="btn btn--ink magnetic" data-i18n="hero.cta1">Explore the menu</a>
+            <a href="espresso.html" class="btn btn--line magnetic" data-i18n="hero.cta2">Meet the espresso</a>
           </div>
         </div>
       </div>
@@ -511,6 +510,6 @@
       "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.169.0/examples/jsm/"
     } }
   </script>
-  <script type="module" src="js/main.js?v=4"></script>
+  <script type="module" src="js/main.js?v=12"></script>
 </body>
 </html>

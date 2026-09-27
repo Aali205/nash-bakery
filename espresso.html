@@ -1,0 +1,132 @@
+<!doctype html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title data-i18n="p.esp.doc">The Espresso — NASH Artisanal Bakery</title>
+  <meta name="description" content="NASH espresso: freshly ground, pulled with care and finished with a thick golden crema." />
+  <meta name="theme-color" content="#80875C" />
+  <link rel="icon" href="assets/img/logo.jpg" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..700;1,9..144,300..700&family=Unbounded:wght@400;600;800&family=Space+Mono:wght@400;700&family=Reem+Kufi:wght@500;700&family=IBM+Plex+Sans+Arabic:wght@300;400;600&family=Inter:wght@300;400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/style.css?v=8" />
+  <link rel="stylesheet" href="css/pages.css?v=8" />
+</head>
+<body class="page page--espresso">
+  <div class="grain" aria-hidden="true"></div>
+
+  <header class="nav">
+    <a href="index.html" class="nav__logo" aria-label="NASH home"><img src="assets/img/nash-ink.png" alt="NASH" /></a>
+    <nav class="nav__links" aria-label="Primary">
+      <a href="story.html" data-i18n="nav.story">Story</a>
+      <a href="espresso.html" data-i18n="nav.espresso">Espresso</a>
+      <a href="damascene.html" data-i18n="nav.damascene">Damascene</a>
+      <a href="menu.html" data-i18n="nav.menu">Menu</a>
+      <a href="visit.html" data-i18n="nav.visit">Visit</a>
+    </nav>
+    <div class="nav__right">
+      <span class="status" data-status><i></i><b data-status-text>Open now</b></span>
+      <button class="lang" type="button" data-lang-toggle aria-label="Switch language">عربي</button>
+      <a class="btn btn--ink" href="order.html" data-i18n="nav.order">Order</a>
+      <button class="burger" type="button" aria-label="Menu" aria-expanded="false" data-burger><span></span><span></span></button>
+    </div>
+  </header>
+
+  <div class="mobile-menu" data-mobile-menu>
+    <a href="index.html" data-i18n="p.home">Home</a>
+    <a href="story.html" data-i18n="nav.story">Story</a>
+    <a href="espresso.html" data-i18n="nav.espresso">Espresso</a>
+    <a href="damascene.html" data-i18n="nav.damascene">Damascene</a>
+    <a href="menu.html" data-i18n="nav.menu">Menu</a>
+    <a href="visit.html" data-i18n="nav.visit">Visit</a>
+    <a href="order.html" data-i18n="nav.order">Order</a>
+  </div>
+
+  <main>
+    <section class="phead">
+      <div class="phead__crumbs mono"><a href="index.html" data-i18n="p.home">Home</a><span>/</span><span data-i18n="nav.espresso">Espresso</span></div>
+      <span class="eyebrow" data-i18n="p.esp.e">The Espresso</span>
+      <h1 class="display display--ink" data-i18n="esp.title">A shot with a <em>signature</em> taste.</h1>
+      <p class="phead__lead" data-i18n="esp.body">Ground fresh for every cup, pulled with care, and finished with a thick golden crema. Our espresso is the quiet heart of NASH — bold, round and unmistakably ours.</p>
+      <img class="phead__mark" src="assets/img/nash-ink.png" alt="" aria-hidden="true" />
+    </section>
+
+    <!-- Loops assets/video/espresso.mp4; the whole section is removed if the file is missing -->
+    <section class="psec film-sec" data-video hidden>
+      <div class="psec__head">
+        <span class="eyebrow" data-i18n="p.esp.fe">Behind the counter</span>
+        <h2 class="h2 rv" data-i18n="p.esp.ft">Mornings <em>with NASH.</em></h2>
+      </div>
+      <figure class="film rv">
+        <video muted loop playsinline preload="metadata" poster="assets/video/espresso-poster.jpg" aria-label="A morning at NASH: the espresso machine, the kitchen, cinnamon rolls and cookies being made, and customers at the counter">
+          <source src="assets/video/espresso.mp4" type="video/mp4" />
+        </video>
+      </figure>
+    </section>
+
+    <section class="psec">
+      <div class="duo duo--even">
+        <div class="crema rv" aria-hidden="true"><img src="assets/img/nash-ink.png" alt="" /></div>
+        <ul class="callouts">
+          <li class="callout rv"><span class="callout__n mono">01</span><b data-i18n="esp.c1t">Golden crema</b><small data-i18n="esp.c1">Dense, hazel-toned, and slow to fade.</small></li>
+          <li class="callout rv"><span class="callout__n mono">02</span><b data-i18n="esp.c2t">Freshly ground</b><small data-i18n="esp.c2">Every shot starts as whole beans.</small></li>
+          <li class="callout rv"><span class="callout__n mono">03</span><b data-i18n="esp.c3t">Original ingredients</b><small data-i18n="esp.c3">Real milk, real butter, real sugar. Nothing artificial.</small></li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="psec psec--ink">
+      <div class="psec__head">
+        <span class="eyebrow" data-i18n="p.esp.se">The ritual</span>
+        <h2 class="h2 rv" data-i18n="p.esp.st">From bean <em>to cup.</em></h2>
+      </div>
+      <ol class="cards">
+        <li class="card rv"><span class="mono">01</span><b data-i18n="p.esp.s1t">Whole beans</b><p data-i18n="esp.c2">Every shot starts as whole beans.</p></li>
+        <li class="card rv"><span class="mono">02</span><b data-i18n="p.esp.s2t">Ground fresh</b><p data-i18n="p.esp.s2">Ground right before brewing — never ahead of time.</p></li>
+        <li class="card rv"><span class="mono">03</span><b data-i18n="p.esp.s3t">Pulled with care</b><p data-i18n="p.esp.s3">Dosed, tamped and pulled for every single order.</p></li>
+        <li class="card rv"><span class="mono">04</span><b data-i18n="esp.c1t">Golden crema</b><p data-i18n="esp.c1">Dense, hazel-toned, and slow to fade.</p></li>
+      </ol>
+    </section>
+
+    <section class="psec">
+      <div class="psec__head">
+        <span class="eyebrow" data-i18n="p.esp.be">On the bar</span>
+        <h2 class="h2 rv" data-i18n="p.esp.bt">Coffee &amp; <em>matcha.</em></h2>
+      </div>
+      <div class="menu__grid" data-menu="coffee"></div>
+      <div class="menu__grid" data-menu="drinks" style="margin-top:18px"></div>
+    </section>
+    <section class="cta">
+      <h2 class="h2 rv" data-i18n="p.cta.t">Hungry <em>yet?</em></h2>
+      <div class="pbtns rv">
+        <a class="btn btn--cream" href="menu.html" data-i18n="p.cta.menu">See the full menu</a>
+        <a class="btn btn--line" href="order.html" data-i18n="p.cta.order">Order now</a>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="footer__top">
+      <p class="footer__line" data-i18n="foot.line">See you <em>tonight.</em></p>
+      <button class="btn btn--line" data-to-top type="button" data-i18n="foot.top">Back to top ↑</button>
+    </div>
+    <nav class="footer__nav" aria-label="Footer">
+      <a href="index.html" data-i18n="p.home">Home</a>
+      <a href="story.html" data-i18n="nav.story">Story</a>
+      <a href="espresso.html" data-i18n="nav.espresso">Espresso</a>
+      <a href="damascene.html" data-i18n="nav.damascene">Damascene</a>
+      <a href="menu.html" data-i18n="nav.menu">Menu</a>
+      <a href="visit.html" data-i18n="nav.visit">Visit</a>
+      <a href="order.html" data-i18n="nav.order">Order</a>
+    </nav>
+    <div class="footer__word"><img src="assets/img/nash-ink.png" alt="NASH" /></div>
+    <div class="footer__bottom mono">
+      <span>© <span data-year></span> NASH Artisanal Bakery</span>
+      <span data-i18n="foot.made">Damascus · Est. 2018</span>
+    </div>
+  </footer>
+
+  <script type="module" src="js/page.js?v=9"></script>
+</body>
+</html>

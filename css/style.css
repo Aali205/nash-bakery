@@ -481,3 +481,15 @@ main { overflow-x: clip; }
   .bake__step p { font-size: 14px; }
   .bake__scene { max-height: 52svh; }
 }
+
+/* nav stays readable on top of the open mobile menu */
+.menu-open .nav { color: var(--cream); background: transparent; backdrop-filter: none; -webkit-backdrop-filter: none; }
+.menu-open .nav__logo img { filter: invert(93%) sepia(8%) saturate(420%) hue-rotate(348deg); }
+.menu-open .burger { background: var(--cream); }
+.menu-open .burger span { background: var(--ink); }
+
+
+/* ---------- no text selection / copying (site-wide) ---------- */
+body { -webkit-user-select: none; user-select: none; -webkit-touch-callout: none; }
+img, video { -webkit-user-drag: none; user-drag: none; }
+input, textarea, [contenteditable="true"] { -webkit-user-select: text; user-select: text; }

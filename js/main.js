@@ -1,5 +1,6 @@
 // NASH — interactions & scroll choreography
-import { AR, EN, MENU, CAT_LABEL, ICONS } from './i18n.js?v=4';
+import { AR, EN, MENU, CAT_LABEL, ICONS } from './i18n.js?v=5';
+import './nocopy.js?v=1';
 
 const { gsap, ScrollTrigger, SplitText, Lenis } = window;
 gsap.registerPlugin(ScrollTrigger, SplitText);
@@ -24,7 +25,7 @@ if (isAR) {
   $('[data-lang-toggle]').textContent = 'EN';
 }
 $('[data-lang-toggle]').addEventListener('click', () => {
-  try { localStorage.setItem('nash-lang', isAR ? 'en' : 'ar'); } catch {}
+  try { localStorage.setItem('nash-lang', isAR ? 'en' : 'ar'); sessionStorage.setItem('nash-lang-switch', '1'); } catch {}
   window.scrollTo(0, 0);
   location.reload();
 });
@@ -122,7 +123,9 @@ $$('a[href^="#"]').forEach((a) => a.addEventListener('click', (e) => {
   scrollToTarget(id === '#top' ? 0 : id);
 }));
 $('[data-to-top]').addEventListener('click', () => scrollToTarget(0));
-$('[data-burger]').addEventListener('click', () => document.body.classList.toggle('menu-open'));
+$('[data-burger]').addEventListener('click', (e) => {
+  e.currentTarget.setAttribute('aria-expanded', document.body.classList.toggle('menu-open'));
+});
 
 /* ------------------------------------------------------------------ */
 /* Nav                                                                  */
@@ -176,7 +179,7 @@ if (matchMedia('(hover: hover)').matches) {
 /* 3D espresso scene                                                    */
 /* ------------------------------------------------------------------ */
 let scene = null;
-const sceneReady = import('./scene.js?v=4')
+const sceneReady = import('./scene.js?v=5')
   .then(({ createScene }) => { scene = createScene($('.webgl')); })
   .catch((err) => { console.warn('WebGL scene disabled:', err); $('.webgl').remove(); });
 
@@ -286,7 +289,23 @@ function beanBurst(count) {
 
 $('[data-skip]').addEventListener('click', () => gsap.globalTimeline.timeScale(6));
 
-Promise.all([
+// The intro plays when the site is opened fresh or refreshed — not when arriving
+// from another NASH page (logo, nav links) or after switching language.
+const navType = performance.getEntriesByType('navigation')[0]?.type;
+let fromInside = false;
+try { fromInside = new URL(document.referrer).origin === location.origin; } catch {}
+let langSwitch = false;
+try { langSwitch = sessionStorage.getItem('nash-lang-switch') === '1'; sessionStorage.removeItem('nash-lang-switch'); } catch {}
+const skipIntro = langSwitch || (navType !== 'reload' && fromInside);
+
+if (skipIntro) {
+  actOne.kill();
+  gsap.ticker.remove(progressTick);
+  Promise.race([sceneReady, new Promise((r) => setTimeout(r, 1500))]).then(() => {
+    gsap.to(loader, { opacity: 0, duration: 0.5, ease: 'power2.out', onComplete: startSite });
+    intro();
+  });
+} else Promise.all([
   waitForAssets((p) => { loaderState.real = Math.max(loaderState.real, p); }),
   new Promise((r) => setTimeout(r, 3400)),
 ]).then(() => {
@@ -370,8 +389,9 @@ function intro() {
 function setupScroll() {
   const mm = gsap.matchMedia();
 
-  // Hero wordmark drifts back as you leave
-  gsap.to('.hero__word', {
+  // Hero wordmark (and video) drift back as you leave. Targets the wrapper so it
+  // never fights the intro tween on .hero__word over the same properties.
+  gsap.to('.hero__mark', {
     yPercent: -35, scale: 0.85, opacity: 0.25, ease: 'none',
     scrollTrigger: { trigger: '.hero', start: 'top top', end: 'bottom top', scrub: true },
   });
