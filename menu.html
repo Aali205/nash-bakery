@@ -11,7 +11,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..700;1,9..144,300..700&family=Unbounded:wght@400;600;800&family=Space+Mono:wght@400;700&family=Reem+Kufi:wght@500;700&family=IBM+Plex+Sans+Arabic:wght@300;400;600&family=Inter:wght@300;400;500&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="css/style.css?v=8" />
-  <link rel="stylesheet" href="css/pages.css?v=8" />
+  <link rel="stylesheet" href="css/pages.css?v=12" />
 </head>
 <body class="page page--menu">
   <div class="grain" aria-hidden="true"></div>
@@ -52,10 +52,24 @@
       <img class="phead__mark" src="assets/img/nash-ink.png" alt="" aria-hidden="true" />
     </section>
 
-    <section class="psec">
-      <nav class="chips" aria-label="Menu categories" data-menu-chips></nav>
-      <div data-menu-full></div>
-      <p class="menu__note mono" data-i18n="menu.note">Menu changes with the seasons — ask the counter for today's specials.</p>
+    <!-- Helix menu: item names twist around a sticky plate as you scroll. -->
+    <section class="mhelix" data-helix>
+      <nav class="chips mhelix__chips" aria-label="Menu categories" data-helix-chips></nav>
+      <div class="mhelix__track">
+        <!-- the layer spans exactly the rows, so the sticky plate leaves with the last item -->
+        <div class="mhelix__layer" aria-hidden="true">
+          <div class="mhelix__stage">
+            <div class="plate" data-plate></div>
+            <div class="plate__cap">
+              <span class="mono" data-cap-cat></span>
+              <p data-cap-desc></p>
+              <span class="mcard__tag" data-cap-tag hidden></span>
+            </div>
+          </div>
+        </div>
+        <div class="mhelix__rows" data-helix-rows></div>
+      </div>
+      <p class="menu__note mono mhelix__note" data-i18n="menu.note">Menu changes with the seasons — ask the counter for today's specials.</p>
     </section>
     <section class="cta">
       <h2 class="h2 rv" data-i18n="p.cta.t">Hungry <em>yet?</em></h2>
@@ -87,6 +101,7 @@
     </div>
   </footer>
 
-  <script type="module" src="js/page.js?v=9"></script>
+  <script type="module" src="js/page.js?v=10"></script>
+  <script type="module" src="js/menu-helix.js?v=1"></script>
 </body>
 </html>

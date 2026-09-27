@@ -28,6 +28,7 @@ function applyLang() {
   $('[data-lang-toggle]').textContent = ar ? 'EN' : 'عربي';
   renderMenus();
   updateStatus();
+  document.dispatchEvent(new CustomEvent('nash:lang'));
 }
 $('[data-lang-toggle]').addEventListener('click', () => {
   lang = isAR() ? 'en' : 'ar';
