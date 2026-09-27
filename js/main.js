@@ -1,5 +1,5 @@
 // NASH — interactions & scroll choreography
-import { AR, EN, MENU, CAT_LABEL, ICONS } from './i18n.js?v=3';
+import { AR, EN, MENU, CAT_LABEL, ICONS } from './i18n.js?v=4';
 
 const { gsap, ScrollTrigger, SplitText, Lenis } = window;
 gsap.registerPlugin(ScrollTrigger, SplitText);
@@ -176,7 +176,7 @@ if (matchMedia('(hover: hover)').matches) {
 /* 3D espresso scene                                                    */
 /* ------------------------------------------------------------------ */
 let scene = null;
-const sceneReady = import('./scene.js?v=3')
+const sceneReady = import('./scene.js?v=4')
   .then(({ createScene }) => { scene = createScene($('.webgl')); })
   .catch((err) => { console.warn('WebGL scene disabled:', err); $('.webgl').remove(); });
 
@@ -643,9 +643,9 @@ function cakeScene() {
   gsap.set(steps, { opacity: 0, y: 20 });
   gsap.set(steps[0], { opacity: 1, y: 0 });
   gsap.set(dots[0], { backgroundColor: '#c68b4e', width: 44 });
-  gsap.set('.cake-pos', { x: 300, y: 300 });
-  gsap.set('.cake-scale', { scale: 0.85, svgOrigin: '0 0' });
-  gsap.set('.cake-rise', { scaleY: 0.6, svgOrigin: '0 58' });
+  gsap.set('.cake-pos', { x: 300, y: 292 });
+  gsap.set('.cake-scale', { scale: 1, svgOrigin: '0 0' });
+  gsap.set('.cake-rise', { scaleY: 0.66, svgOrigin: '0 58' });
   gsap.set('.board', { opacity: 0, y: 30 });
   gsap.set('.jug-pos', { x: 130, y: -150 });
   gsap.set('.jug', { rotation: 0, svgOrigin: '0 0' });
@@ -702,7 +702,7 @@ function cakeScene() {
   toStep(2, 6.1);
   tl.to('.cake-pos', { x: OUT.x, y: OUT.y, duration: 1.2, ease: 'power2.inOut' }, 6.2)
     .to('.cake-scale', { scale: OUT.s, svgOrigin: '0 0', duration: 1.2, ease: 'power2.inOut' }, 6.2)
-    .to(['.oven-back', '.oven-door'], { opacity: 0.18, y: -30, duration: 1.2 }, 6.2)
+    .to(['.oven-back', '.oven-door'], { opacity: 0.1, y: -60, duration: 1.2 }, 6.2)
     .to('.board', { opacity: 1, y: 0, duration: 0.8, ease: 'power2.out' }, 6.5)
     .to('.cake-steam', { opacity: 1, duration: 0.4 }, 7.1)
     .to('.cake-pan', { y: 110, opacity: 0, duration: 0.6, ease: 'power2.in' }, 7.5);
