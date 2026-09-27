@@ -1,5 +1,5 @@
 // NASH — interactions & scroll choreography
-import { AR, EN, MENU, CAT_LABEL, ICONS } from './i18n.js';
+import { AR, EN, MENU, CAT_LABEL, ICONS } from './i18n.js?v=3';
 
 const { gsap, ScrollTrigger, SplitText, Lenis } = window;
 gsap.registerPlugin(ScrollTrigger, SplitText);
@@ -176,7 +176,7 @@ if (matchMedia('(hover: hover)').matches) {
 /* 3D espresso scene                                                    */
 /* ------------------------------------------------------------------ */
 let scene = null;
-const sceneReady = import('./scene.js')
+const sceneReady = import('./scene.js?v=3')
   .then(({ createScene }) => { scene = createScene($('.webgl')); })
   .catch((err) => { console.warn('WebGL scene disabled:', err); $('.webgl').remove(); });
 
