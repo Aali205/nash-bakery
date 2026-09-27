@@ -11,7 +11,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..700;1,9..144,300..700&family=Unbounded:wght@400;600;800&family=Space+Mono:wght@400;700&family=Reem+Kufi:wght@500;700&family=IBM+Plex+Sans+Arabic:wght@300;400;600&family=Inter:wght@300;400;500&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="css/style.css?v=8" />
-  <link rel="stylesheet" href="css/pages.css?v=12" />
+  <link rel="stylesheet" href="css/pages.css?v=14" />
 </head>
 <body class="page page--visit">
   <div class="grain" aria-hidden="true"></div>
@@ -50,6 +50,20 @@
       <h1 class="display display--ink" data-i18n="visit.title">Visit <em>us.</em></h1>
       <p class="phead__lead" data-i18n="p.visit.lead">Our doors are open every day, from ten in the morning until midnight.</p>
       <img class="phead__mark" src="assets/img/nash-ink.png" alt="" aria-hidden="true" />
+    </section>
+
+    <!-- Loops assets/video/visit.mp4; the whole section is removed if the file is missing -->
+    <section class="psec film-sec" data-video hidden>
+      <div class="psec__head">
+        <span class="eyebrow" data-i18n="p.visit.fe">Step inside</span>
+        <h2 class="h2 rv" data-i18n="p.visit.ft">Come <em>on in.</em></h2>
+      </div>
+      <figure class="film film--wide rv">
+        <video muted loop playsinline preload="metadata" poster="assets/video/visit-poster.jpg?v=2" aria-label="Inside NASH: the front door, customers at the counter and bakers at work">
+          <source src="assets/video/visit.mp4?v=2" type="video/mp4" />
+        </video>
+        <button class="film__sound mono" type="button" data-sound aria-pressed="false" data-i18n="p.vid.son">Sound on</button>
+      </figure>
     </section>
 
     <section class="psec">
@@ -138,6 +152,6 @@
     </div>
   </footer>
 
-  <script type="module" src="js/page.js?v=10"></script>
+  <script type="module" src="js/page.js?v=11"></script>
 </body>
 </html>

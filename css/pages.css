@@ -201,3 +201,13 @@ html[lang="ar"] .footer__nav a { font-family: var(--f-body); letter-spacing: 0; 
 .plate__cap [hidden] { display: none; }
 .hrow.is-focused .hw--a { color: var(--crema); }
 .hrow.is-focused .hw--b { color: var(--cream); }
+.film { position: relative; }
+.film__sound {
+  position: absolute; left: 16px; bottom: 16px; padding: 10px 16px; border-radius: 99px;
+  background: rgba(18,18,14,.6); color: var(--cream); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+  font-size: 11px; transition: background .3s, color .3s;
+}
+html[dir="rtl"] .film__sound { left: auto; right: 16px; }
+html[lang="ar"] .film__sound { font-family: var(--f-body); letter-spacing: 0; font-size: 13px; }
+.film__sound:hover, .film__sound[aria-pressed="true"] { background: var(--cream); color: var(--ink); }
+.film--wide { aspect-ratio: 1280 / 594; width: min(100%, calc((100svh - 130px) * 1280 / 594)); }

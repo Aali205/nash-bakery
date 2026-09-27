@@ -1,6 +1,6 @@
 // NASH — shared script for the inner pages (no intro, no WebGL)
 import { AR, EN, MENU, CAT_LABEL, ICONS } from './i18n.js?v=5';
-import { PAGES_AR } from './pages-i18n.js?v=7';
+import { PAGES_AR } from './pages-i18n.js?v=8';
 import './nocopy.js?v=1';
 
 const $ = (s, root = document) => root.querySelector(s);
@@ -126,11 +126,27 @@ function observe() {
 }
 
 /* ------------------------------------------------------------------ */
-/* Looping page video (espresso page) — section removed if the file is missing */
+/* Looping page video (espresso, visit) — section removed if the file is missing */
 /* ------------------------------------------------------------------ */
 const vbox = $('[data-video]');
 if (vbox) {
   const video = $('video', vbox);
+  // Optional sound toggle (only for videos that have an audio track)
+  const sound = $('[data-sound]', vbox);
+  if (sound) {
+    const syncSound = () => {
+      sound.setAttribute('aria-pressed', String(!video.muted));
+      sound.dataset.i18n = video.muted ? 'p.vid.son' : 'p.vid.soff';
+      originals.set(sound, video.muted ? 'Sound on' : 'Sound off');
+      sound.innerHTML = (isAR() && DICT_AR[sound.dataset.i18n]) || originals.get(sound);
+    };
+    sound.addEventListener('click', () => {
+      video.muted = !video.muted;
+      // keep it playing either way; if the browser blocks sound, fall back to muted
+      video.play().catch(() => { video.muted = true; video.play().catch(() => {}); syncSound(); });
+      syncSound();
+    });
+  }
   fetch($('source', video).getAttribute('src'), { method: 'HEAD' })
     .then((r) => r.ok)
     .catch(() => false)
